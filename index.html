@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Playfair+Display:wght@400;500&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1d1d1f;
+  }
+
+  .clock {
+    width: 100%;
+    max-width: 700px;
+    padding: 42px 35px;
+    text-align: center;
+    font-family: "DM Mono", monospace;
+  }
+
+  .time {
+    font-size: clamp(55px, 11vw, 105px);
+    font-weight: 300;
+    letter-spacing: -0.07em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .seconds {
+    font-size: 0.27em;
+    opacity: 0.38;
+    letter-spacing: 0;
+    vertical-align: baseline;
+    margin-left: 8px;
+  }
+
+  .divider {
+    width: 45px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.18;
+    margin: 25px auto 20px;
+  }
+
+  .date {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(15px, 2vw, 19px);
+    font-weight: 400;
+    opacity: 0.58;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+  }
+
+  .timezone {
+    margin-top: 10px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.3;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      color: #f1eee8;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="clock">
+  <div class="time">
+    <span id="hours">00</span>:<span id="minutes">00</span>
+    <span class="seconds" id="seconds">00</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="date" id="date"></div>
+
+  <div class="timezone" id="timezone"></div>
+</div>
+
+<script>
+  const hours = document.getElementById("hours");
+  const minutes = document.getElementById("minutes");
+  const seconds = document.getElementById("seconds");
+  const date = document.getElementById("date");
+  const timezone = document.getElementById("timezone");
+
+  function updateClock() {
+    const now = new Date();
+
+    hours.textContent = String(now.getHours()).padStart(2, "0");
+    minutes.textContent = String(now.getMinutes()).padStart(2, "0");
+    seconds.textContent = String(now.getSeconds()).padStart(2, "0");
+
+    date.textContent = now.toLocaleDateString("fr-FR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+
+    timezone.textContent =
+      Intl.DateTimeFormat().resolvedOptions().timeZone.replace("_", " ");
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
